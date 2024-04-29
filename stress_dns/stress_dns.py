@@ -1,6 +1,7 @@
 import socket
 import struct
 import threading
+import os
 
 def send_dns_requests(target_host, dns_server, num_requests, num_threads):
     # Create a lock to synchronize access to shared resources (like stdout)
@@ -63,9 +64,10 @@ def parse_dns_response(response):
     return ip_address
 
 if __name__ == "__main__":
-    target_host = input("Enter the target host name: ")
-    dns_server = input("Enter the DNS server IP address: ")
-    num_requests = int(input("Enter number of requests per thread: "))
-    num_threads = int(input("Enter number of threads: "))
+    # Read configuration from environment variables
+    target_host = os.environ.get("TARGET_HOST", "example.com")
+    dns_server = os.environ.get("DNS_SERVER", "8.8.8.8")
+    num_requests = int(os.environ.get("NUM_REQUESTS", 100))
+    num_threads = int(os.environ.get("NUM_THREADS", 10))
 
     send_dns_requests(target_host, dns_server, num_requests, num_threads)

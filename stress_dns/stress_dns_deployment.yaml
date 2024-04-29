@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dns-stress
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stress-dns
+  template:
+    metadata:
+      labels:
+        app: stress-dns
+    spec:
+      containers:
+      - name: stress-dns
+        image: aceslade.azurecr.io/ruckus-conductor/stress-dns:latest
+        env:
+        - name: TARGET_HOST
+          value: "atlantacloudgroup.com" # Change to your desired target DNS host name
+        - name: DNS_SERVER
+          value: "10.0.0.10" # Change to your desired target DNS server
+        - name: NUM_REQUESTS
+          value: "100"
+        - name: NUM_THREADS
+          value: "10"
